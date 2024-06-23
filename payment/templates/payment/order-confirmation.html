@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmation</h1>
+        <div id="order-details">
+        </div>
+        <button id="capture-btn" class="submit-btn">Capture Order Details</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const orderDetailsDiv = document.getElementById("order-details");
+            const orderData = JSON.parse(localStorage.getItem("orderData"));
+            
+            orderDetailsDiv.innerHTML = `
+                <p><strong>Name:</strong> ${orderData.name}</p>
+                <p><strong>Email:</strong> ${orderData.email}</p>
+                <p><strong>Phone:</strong> ${orderData.phone}</p>
+                <p><strong>Location:</strong> ${orderData.location}</p>
+                <p><strong>Product Name:</strong> ${orderData.product.name}</p>
+                <p><strong>Price:</strong> $${orderData.product.price}</p>
+                <p><strong>Order Code:</strong> ${orderData.orderCode}</p>
+            `;
+
+            document.getElementById("capture-btn").addEventListener("click", () => {
+                html2canvas(orderDetailsDiv).then(canvas => {
+                    const dataURL = canvas.toDataURL();
+                    const link = document.createElement("a");
+                    link.href = dataURL;
+                    link.download = "order-details.png";
+                    link.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

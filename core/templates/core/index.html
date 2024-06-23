@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Welcome{% endblock title %}
+{% block content %}
+    <div class="categories">
+        <h2>
+            Hot categories
+        </h2>
+        <ul>
+            {% for category in categories %}
+                <li><a href="{% url 'core:category_detail' category_id=category.id %}">{{ category.name }}</a></li>
+            {% endfor %}
+
+        </ul>
+    </div>
+    <div class="image-em">
+        <h2>Fell Free to buy and sell what you want</h2>
+        <img src="{% static 'img/img.webp' %}" alt="webp">
+    </div>
+    <hr>
+    <div class="category-section">
+        <a href="category1.html" class="category-link">
+            <h2>Category</h2>
+        </a>
+        <div class="items-container">
+            {% for item in items %}
+                <a href="{% url 'item:item' item.id %}" class="item">
+                    {% if item.image  %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                    {%else%}
+                        <p>NO PHOTO</p>
+                    {%endif%}
+                    <h3>{{ item.name }}</h3>
+                    <p>{{ item.price }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <div class="about-us">
+            <h3>About Us</h3>
+            <p>This is a brief description of your company or website.</p>
+        </div>
+
+        <div class="social-media">
+            <h3>Follow Us</h3>
+            <ul>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Instagram</a></li>
+            </ul>
+        </div>
+    </footer>
+{% endblock %}

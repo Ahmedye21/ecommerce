@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Add Item{% endblock %}
+{% block content %}
+<div class="category-container">
+    <h2 class="category-title">{{ category.name }}</h2>
+    <ul class="item-list-category">
+        {% for item in items %}
+            <a href="{% url 'item:item' item.id %}" class="item">
+                {% if item.image  %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                {%else%}
+                    <p>NO PHOTO</p>
+                {%endif%}
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.price }}</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

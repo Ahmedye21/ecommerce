@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ item.name }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="category-list">
+        <h2>Categories</h2>
+        <ul>
+            {% for category in categories %}
+                <li class="category-item">
+                    <a href="{% url 'core:category_detail' category_id=category.id %}">{{ category.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="product-container">
+        <div class="product-details">
+            <h1>Name: {{ item.name }}</h1>
+            <h2>User : {{ item.created_by }}</h2>
+            <p class="price">Price: {{ item.price }}</p>
+            <p class="description">About: {{ item.description }}</p>
+            {% if not is_owner %}
+            <a href="{% url 'payment:add_pay_info' %}">
+                <button class="btn btn-primary">Add to Cart</button>
+            </a>
+                
+            {% endif %}
+            {% if show_delete_button %}
+                <form action="{% url 'item:item_delete' item.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="delete-button" id="delete-button-{{ item.pk }}">Delete</button>
+                </form>
+            {% endif %}
+            {% if show_sold_button %}
+                <form action="{% url 'item:mark_as_sold' item.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="sold-button" id="sold-button-{{ item.pk }}">Mark as Sold</button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="product-image">
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+            {% else %}
+                <p>NO PHOTO</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="related-items">
+    <h2>Related Items</h2>
+    <div class="items-container">
+        {% for related_item in related_items %}
+            <a href="{% url 'item:item' related_item.id %}" class="related-item" data-category="{{ related_item.category.name }}">
+                <div>
+                    <img src="{{ related_item.image.url }}" alt="{{ related_item.name }}">
+                    <h3>{{ related_item.name }}</h3>
+                    <p>{{ related_item.price }}</p>
+                    <p>Category: {{ related_item.category.name }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+*.egg
+dist/
+build/
+eggs/
+develop-eggs/
+.installed.cfg
+*.egg-info/
+.installed.cfg
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media
+
+# Ignore the .env file
+.env
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore the file storage and cache directories
+media/
+staticfiles/
+*.bak
+*.swp
+*.swo
+*.swn

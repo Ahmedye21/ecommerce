@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home{% endblock %} | E-commerce</title>
+    <link rel="stylesheet" href="{% static 'css/STYLE.CSS' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'core:index' %}"><img src="" alt="Home"></a>
+            <span>E-commerce</span>
+        </div>
+        <div class="navbar-links">
+            <div class="navbar-search">
+                <form method="GET" action="{% url 'item:search' %}">
+                    <input type="text" name="q" placeholder="Search items...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'core:logout' %}">Logout</a></li>
+                    <li><a href="{% url 'core:profile' %}">Dashboard</a></li>
+                    <li><a href="{% url 'item:add_item' %}">Sell</a></li>
+                {% else %}
+                    <li><a href="{% url 'core:login' %}">Login</a></li>
+                    <li><a href="{% url 'core:signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% for category in categories %}
+        <div class="dropdown">
+            <button class="dropbtn">{{ category.name }}</button>
+            <div class="dropdown-content">
+                {% for item in items %}
+                    {% if item.category == category %}
+                        <a href="{% url 'core:category_detail' category_id=category.id %}">{{ item.name }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+    <hr>
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

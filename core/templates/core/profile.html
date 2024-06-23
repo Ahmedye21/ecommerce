@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+<div class="body-profile">
+    <div class="container1">
+        <div class="profile-container">
+            <h1>Your Profile</h1>
+            <div class="profile-details">
+                <p>Username: {{ user.username }}</p>
+                <p>Email: {{ user.email }}</p>
+            </div>
+            <div class="profile-stats">
+                <h2>Statistics</h2>
+                <p>Total Money Gained: ${{ money_gained }}</p>
+                <p>Total Money You Have: ${{ money_u_have }}</p>
+                <p>Total Items Bought: {{ total_items_bought }}</p>
+                <p>Total Items Listed: {{ total_items_listed }}</p>
+                <p>Total Items Sold: {{ total_items_sold }}</p>
+            </div>
+        </div>
+
+        <div class="items-container1">
+            <div class="box1">
+                <h2>Items</h2>
+                <ul class="item-list1">
+                    {% for item in items %}
+                        <a href="{% url 'item:item' item.id %}" class="item1">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                            {% else %}
+                                <p>NO PHOTO</p>
+                            {% endif %}
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                            <p>{{ item.description }}</p>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="box1">
+                <h2>Sold</h2>
+                <ul class="item-list">
+                    {% for item in sold_items %}
+                        <a href="{% url 'item:item' item.id %}" class="item1">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                            {% else %}
+                                <p>NO PHOTO</p>
+                            {% endif %}
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                            <p>{{ item.description }}</p>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
