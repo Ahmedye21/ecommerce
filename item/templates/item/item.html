@@ -18,11 +18,11 @@
             <h2>User : {{ item.created_by }}</h2>
             <p class="price">Price: {{ item.price }}</p>
             <p class="description">About: {{ item.description }}</p>
-            {% if not is_owner %}
-            <a href="{% url 'payment:add_pay_info' %}">
+            {% if not is_owner %}  
+            <form action="{% url 'payment:add_pay_info' %}" method="GET">
+                <input type="hidden" name="item_id" value="{{ item.id }}">
                 <button class="btn btn-primary">Add to Cart</button>
-            </a>
-                
+            </form>
             {% endif %}
             {% if show_delete_button %}
                 <form action="{% url 'item:item_delete' item.id %}" method="post">

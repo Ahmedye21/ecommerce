@@ -5,7 +5,7 @@ class pay_info(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=100)
-    location = models.TextField()
+    location = models.TextField(max_length=100)
     state = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
 

@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
-from item.models import Item , Category , Purchase
+from item.models import Item , Category ,Purchase, Profile
 
 def index(request):
     categories = Category.objects.all()
@@ -53,25 +53,24 @@ def my_login(request):
     return render (request,'core/login.html')
 @login_required
 def profile(request):
-    user                            = request.user
-    items                           = Item.objects.filter(created_by=user)
-    sold_items                      = items.filter(is_sold=True)
-    unsold_items                    = items.filter(is_sold=False)
-    money_gained                    = sold_items.aggregate(total=Sum('price'))['total'] or 0.0
-    money_spent_on_purchases        = Purchase.objects.filter(buyer=user).aggregate(total=Sum('price'))['total'] or 0.0
-    money_u_have                    = money_gained - money_spent_on_purchases
-    
-
-
+    user = request.user
+    profile, created    = Profile.objects.get_or_create(user=user)
+    items               = Item.objects.filter(created_by=user)
+    sold_items          = items.filter(is_sold=True)
+    unsold_items        = items.filter(is_sold=False)
+    money_gained        = sold_items.aggregate(total_money_gained=Sum('price'))['total_money_gained'] or 0.0
+    money_i_have        = Purchase.objects.filter(seller=user).aggregate(total_money_i_have=Sum('amount'))['total_money_i_have'] or 0.0
     
     context = {
         'user': user,
-        'items': unsold_items,
+        'profile': profile,
+        'unsold_items': unsold_items,
         'sold_items': sold_items,
         'money_gained': money_gained,
         'total_items_listed': items.count(),
         'total_items_sold': sold_items.count(),
-        'money_u_have': money_u_have,
+        'money_i_have': money_i_have,
+        'created': created,
     }
     
     return render(request, 'core/profile.html', context)

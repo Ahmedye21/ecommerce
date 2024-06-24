@@ -1,39 +1,40 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Information</title>
+    <title>Add Payment Info</title>
     <link rel="stylesheet" href="{% static 'css/style1.css' %}">
+    <a href="{% url 'core:index' %}">Home</a>
+
 </head>
 <body>
     <div class="container">
-        <a href="{% url 'core:index' %}" class="home-btn">Home</a>
-        <h1>User Information</h1>
-        <form action="{% url 'payment:payment' %}" method="post">
+        <h1>Add Payment Info</h1>
+        
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        
+        <form method="post">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div class="form-group">
-                <label for="State">State</label>
-                <input type="text" id="State" name="state" required>
-            </div>
-            <div class="form-group">
-                <label for="location">Location</label>
-                <input type="text" id="location" name="location" required>
-            </div>
-            <button type="submit" class="submit-btn">Continue to Cart</button>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ name|default:'' }}">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ email|default:'' }}">
+            
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" value="{{ phone|default:'' }}">
+            
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" value="{{ location|default:'' }}">
+            
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" value="{{ state|default:'' }}">
+            
+            <button type="submit">Submit</button>
         </form>
     </div>
 </body>
